@@ -4,7 +4,7 @@ module DMR
     attr_accessor :id
     attr_reader :username, :password, :full_name, :birthdate, :phone, :email
 
-    def initialize(data)  # username, password, fullname, birthdate, phone
+    def initialize(data)  # username, password, fullname, birthdate, phone, email
       @id = data[:id]
       @username = data[:username]
       @password = data[:password]
