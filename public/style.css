@@ -4,14 +4,41 @@
 }
 
 body {
+  background: url(assets/city.jpg);
   margin:0;
   font-family: 'proxima-nova', Helvetica, Arial, sans-serif;
+}
+
+#wrapper {
+  background: url(assets/trans.png) repeat;
+  display: block;
+  min-height: 100%;
+  max-width: 1020px;
+  min-width: 640px;
+  margin: 0 auto;
+  height: 760px;
+ /* border-right: 1px solid #bfc6c7;
+  border-left: 1px solid #bfc6c7;*/
+
 }
 
 .container {
   width:1088px;
   margin: 0 auto;
+  display: inline;
+  opacity: .6;
 }
+
+.top {
+  display: block;
+  width: 100%;
+  height: 600px;
+  background: url('./assets/designer.jpg') repeat;
+  background-position: right;
+  background-size: 1020px 470px;
+  /*border-bottom: 1px solid #bfc6c7*/
+}
+
 
 /* END RESETS */
 
@@ -22,15 +49,18 @@ body {
   position:relative;
 }
 
-#logo {
+#title {
   display: inline;
   float:left;
+  color: white;
+
 }
 
 div.header ul {
   list-style-type: none; /* removes bullets from a list */
   margin:0px;
   margin-top: 5px;
+  color: white;
 
 }
 
@@ -42,20 +72,57 @@ div.header ul li {
 }
 
 .login-form {
+  background-color: white;
   position:relative;
   cursor: pointer;
   text-transform: uppercase;
   border-radius: 5px;
   border: #e0e0e0 1px solid;
   padding:5px;
+  margin-left: 30px;
+
 }
 
+.form {
+  color: white;
+  font-size: 170%;
+}
+
+.form div{
+  padding: 15px;
+}
+
+
+label {
+  position: relative;
+  width: 50px;
+  padding-left:
+}
+
+input{
+  font-size: 100%;
+
+}
+
+a {
+  text-decoration: none;
+}
 /* END HEADER STYLING */
 .main-menu {
   padding:5px 0 0 10px;
 }
 
+h1 {
+  color: white;
+  text-align: center;
+
+}
+
 .left {
   float:left;
+}
+
+.right{
+  float: right
 }
 
