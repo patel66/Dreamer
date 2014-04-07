@@ -1,1 +1,10 @@
-require_relative ""
+module DMR
+end
+
+require_relative "dreamer/user.rb"
+require_relative "dreamer/journal.rb"
+require_relative "dreamer/db.rb"
+require_relative "dreamer/sleep_entry.rb"
+
+
+require 'pry-debugger'
