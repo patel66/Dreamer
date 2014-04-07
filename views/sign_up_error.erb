@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Error Page</title>
+</head>
+<body>
+  <h3 class="error"><%= @error_message %></h3>
+  <h1>Please, enter your E-Mail and Password to login!:</h1>
+  <form method="post" action="/info-summary">
+    <div>
+      <label for="email">E-mail:</label>
+      <input type="email" id="email" name="email" />
+    </div>
+    <div>
+      <label for="password">Password:</label>
+      <input type="text" id="password" name="password" />
+    </div>
+    <div>
+      <input type="submit" value="Submit Info">
+    </div>
+  </form>
+</body>
+</html>
