@@ -2,6 +2,9 @@ require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
 require 'pry'
+require_relative 'lib/dreamer.rb'
+
+DMR.db_name = 'DMR_test.db'
 
 set :bind, '0.0.0.0'
 
@@ -18,9 +21,12 @@ post '/sign_up' do
   @email = params[:email]
   @password = params[:password]
   @full_name = params[:full_name]
-  @birthdate = Time.at(params[:birthdate])
+  year = params[:birthdate].split('-')[0].to_i
+  month = params[:birthdate].split('-')[1].to_i
+  day = params[:birthdate].split('-')[2].to_i
+  @birthdate = Time.new(year, month, day)
   @phone = params[:phone]
-  result = DMR.SignUp.run({ email: @email, password: @password, birthdate: @birthdate,
+  result = DMR::SignUp.run({ email: @email, password: @password, birthdate: @birthdate,
                   full_name: @full_name, phone: @phone })
   if result.success?
     erb :sign_up_success
