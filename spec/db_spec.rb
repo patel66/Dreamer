@@ -58,5 +58,11 @@ module DMR
       expect(entries_list.last.wake_time).to eq(Time.new(2014, 4,16,7,30))
     end
 
+    it "can return a user by their email" do
+      user = @db1.get_user_by_email(@user1.email)
+      expect(user.id).to eq(@user1.id)
+      expect(user.email).to eq(@user1.email)
+    end
+
   end
 end

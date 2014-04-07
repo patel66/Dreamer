@@ -33,7 +33,7 @@ module DMR
 
     def create_session(user_id)
       @sqlite.execute("INSERT INTO sessions (user_id) VALUES(?)", user_id)
-      session_id = @sqlite.execute("SELECT last_insert_rowid()")
+      session_id = @sqlite.execute("SELECT last_insert_rowid()")[0][0]
       new_session = Session.new(session_id, user_id)
       return new_session
     end
@@ -72,6 +72,19 @@ module DMR
       result.map do |row|
         entry = SleepEntry.new({ user_id: row[1], id: row[0], sleep_time: Time.at(row[2]), wake_time: Time.at(row[3]) })
         entry
+      end
+    end
+
+    def get_user_by_email(email)
+      rows = @sqlite.execute("SELECT * FROM users WHERE email = ?", email)
+      if rows.size == 0
+        return nil
+      else
+        result = rows.first
+        user = User.new({ email: result[1], password: result[2],
+            full_name: result[3], birthdate: Time.at(result[4]), phone: result[5],
+            id: result[0] })
+        user
       end
     end
 
