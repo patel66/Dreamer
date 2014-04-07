@@ -47,9 +47,39 @@ module DMR
       end
     end
 
-    def create_journal_entry()
+    def create_sleep_entry(data)
+      @sqlite.execute("INSERT INTO sleep_entries (user_id, sleep_time, wake_time) VALUES (?,?,?)",
+               data[:user_id], data[:sleep_time].to_i, data[:wake_time].to_i)
+      sleep_entry_id = @sqlite.execute("SELECT last_insert_rowid()")[0][0]
+      entry = SleepEntry.new({ user_id: data[:user_id], sleep_time: data[:sleep_time],
+                                wake_time: data[:wake_time], id: sleep_entry_id })
+      entry
+    end
 
+    def get_sleep_entry(entry_id)
+      rows = @sqlite.execute("SELECT * FROM sleep_entries WHERE id = ?", entry_id)
+      if rows.size == 0
+        return nil
+      else
+        result = rows[0]
+        entry = SleepEntry.new({ id: result[0], user_id: result[1], sleep_time: result[2], wake_time: result[3] })
+      end
+      entry
+    end
 
+    def get_sleep_entries_by_user(user_id)
+      result = @sqlite.execute("SELECT * FROM sleep_entries WHERE user_id = ?", user_id)
+      result.map do |row|
+        entry = SleepEntry.new({ user_id: row[1], id: row[0], sleep_time: Time.at(row[2]), wake_time: Time.at(row[3]) })
+        entry
+      end
+    end
 
+    def clear_all_records
+      @sqlite.execute("DELETE FROM users")
+      @sqlite.execute("DELETE FROM journal_entries")
+      @sqlite.execute("DELETE FROM sleep_entries")
+      @sqlite.execute("DELETE FROM sessions")
+    end
   end
 end

@@ -35,7 +35,7 @@ sqlite.execute %q{
       entry_type  TEXT,
       title       TEXT,
       entry       TEXT,
-      create_date INT
+      creation_date INT
   );
 }
 
