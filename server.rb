@@ -28,7 +28,7 @@ post '/sign_up' do
     @error_message = "That email is already taken.  Please Try Again. "
     erb :sign_up_error
   end
-end
+
 
 
 
