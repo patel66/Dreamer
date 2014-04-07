@@ -8,6 +8,11 @@ body {
   font-family: 'proxima-nova', Helvetica, Arial, sans-serif;
 }
 
+.container {
+  width:1088px;
+  margin: 0 auto;
+}
+
 /* END RESETS */
 
 /* HEADER STYLING*/
@@ -49,3 +54,8 @@ div.header ul li {
 .main-menu {
   padding:5px 0 0 10px;
 }
+
+.left {
+  float:left;
+}
+
