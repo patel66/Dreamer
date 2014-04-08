@@ -25,12 +25,12 @@
 
       <div class="hero-unit cf">
       <div class="container">
-        <div class="widget left">
-          <h1>Your Past Entries:</h1>
+        <div style="color:black;" class="widget left">
+          <h1 style="color:black;">Your Past Entries:</h1>
           <ul>
             <% @entries.each do |entry| %>
-              <li>
-                <h2><a href="/entries/<% @entry.id %>"><%= entry.title %></a>
+              <li style="color:black;">
+                <h2 style="color:black;"><a style="color:black;" href="/entries/<%= entry.id %>"><%= entry.title %></a>
                 </h2>
               </li>
             <% end %>

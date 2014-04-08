@@ -79,6 +79,7 @@ post '/journal_entry' do
                                           entity_type: "night" })
   if result.success?
     redirect '/get_journals'
+  else
   end
 
 end
@@ -88,8 +89,8 @@ get '/sign_in' do
 end
 
 get '/get_journals' do
-  binding.pry
   result = DMR::GetAllJournalEntries.run({ session_id: session[:dmr_sid] })
+  binding.pry
   if result.success?
     @entries = result.entries
     erb :journal_index
