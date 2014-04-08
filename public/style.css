@@ -16,11 +16,13 @@ body {
   max-width: 1020px;
   min-width: 640px;
   margin: 0 auto;
-  height: 760px;
+  height: 800px;
+  border-radius: 6px;
  /* border-right: 1px solid #bfc6c7;
   border-left: 1px solid #bfc6c7;*/
 
 }
+
 
 .container {
   width:1088px;
@@ -32,14 +34,36 @@ body {
 .top {
   display: block;
   width: 100%;
-  height: 600px;
+  height: 620px;
   background: url('./assets/designer.jpg') repeat;
   background-position: right;
   background-size: 1020px 470px;
   /*border-bottom: 1px solid #bfc6c7*/
 }
 
+.calculator{
+  width: 500px;
+  display: block;
+  height: 300px;
+  background: white;
+  margin-left: 255px;
+  border-radius: 3px;
+}
 
+.nav {
+  width: 100%;
+  height: 50px;
+  background: black;
+  display: inline-block;
+}
+
+.nav ul li {
+  color: white;
+  font-size: 100%;
+  display: inline;
+  list-style-type: none;
+  padding: 70px
+}
 /* END RESETS */
 
 /* HEADER STYLING*/
@@ -53,13 +77,14 @@ body {
   display: inline;
   float:left;
   color: white;
-
+  font-size: 150%;
+  padding-left: 50px;
 }
 
 div.header ul {
   list-style-type: none; /* removes bullets from a list */
   margin:0px;
-  margin-top: 5px;
+  padding-top: 40px;
   color: white;
 
 }
@@ -71,8 +96,79 @@ div.header ul li {
   font-size:0.88em;
 }
 
-.login-form {
+
+.hero-unit {
+  padding-top:160px;
+  background-image:url('./assets/bg.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  position: relative;
+  background-size: 100%;
+  height: 606px;
+  border-radius: 6px;
+}
+
+.journal {
+  width: 100%;
+  height: 700px;
+  /*background: blue;*/
+  padding-top: 100px;
+
+}
+
+lable .journal {
+float: left;
+}
+
+.widget {
+  width: 100%;
+  padding: 20px 5px 5px 10px;
   background-color: white;
+  border-radius: 6px;
+}
+
+  .widget ul {
+    margin:10;
+    padding-left:0;
+  }
+  .widget li {
+    list-style-type: none;
+    margin:0;
+    border-top: 1px solid #e6e6e6;
+    padding: 15px 30px 10px;
+    color: #a0a0a0;
+  }
+
+.current-task {
+  padding: 30px;
+}
+  .current-task button {
+
+    width: 110px;
+    height: 55px;
+    margin-top: 5px;
+    cursor: pointer;
+    background-color: #FCF5F5;
+    font-size: 16px;
+    border-radius: 3px;
+    font-family: Helvetica;
+    text-transform: uppercase;
+    border: 0;
+  }
+
+  .current-task span {
+      font-size: 2.5em;
+      font-weight: 300;
+      color: red;
+  }
+
+  .current-task p {
+    margin-top: 0;
+    font-size: 1.5em;
+  }
+
+.login-form {
+  background: url(assets/trans.png) repeat;
   position:relative;
   cursor: pointer;
   text-transform: uppercase;
@@ -89,14 +185,15 @@ div.header ul li {
 }
 
 .form div{
-  padding: 15px;
+  padding: 5px;
 }
 
 
 label {
   position: relative;
   width: 50px;
-  padding-left:
+  padding-left: 50px;
+
 }
 
 input{
@@ -104,8 +201,20 @@ input{
 
 }
 
+.button {
+  background-image: linear-gradient(to bottom,#8dcc35,#47a204);
+  border:none;
+  padding:15px 37px;
+  color:white;
+  font-size:20px;
+  border-radius: 3px;
+  border-color: green;
+  background: url(assets/trans.png) repeat;
+}
+
 a {
   text-decoration: none;
+  color: white;
 }
 /* END HEADER STYLING */
 .main-menu {

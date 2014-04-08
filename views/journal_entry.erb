@@ -6,7 +6,7 @@
   <title>Home Page</title>
 </head>
 <body>
-  <h1>Dreamer</h1>
+  <h1>dREMr</h1>
     <div id="wrapper">
       <div class="container">
          <div class="nav">
@@ -14,11 +14,28 @@
               <li><a href="/home_page">Home Page</a></li>
               <li><a href="/journal_entry">Jounal Entry</a></li>
               <li><a href="/sleep_profile">Sleep Profile</a></li>
-              <li><a href="/info">Sleep Info</a></li>
+              <li><a href="/sleep_info">Sleep Info</a></li>
             </ul>
-
           </div>
         </div> <!-- end of header -->
+
+      <div class="journal">
+        <form class="form" method="post" action="/journal_entry">
+          <div>
+              <label style="padding-left: 150px;"for="title">Title:</label>
+              <input type="text" id="entry" name="title" />
+          </div>
+          <div class="entry">
+              <label style="line-height: 20px;" for="entry">Thought Log:</label>
+              <textarea type="text" id="entry" name="entry" style="width: 600px; height:400px;" ></textarea>
+          </div>
+
+          <div style="padding-left: 220px;" >
+              <input class="button" type="submit" value="Submit Entry"><input class="button" type="get" value="Get all Journals">
+          </div>
+        </form>
+
+      </div>
       </div> <!-- end div container -->
     </div> <!-- end div.header -->
 </body>
