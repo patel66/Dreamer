@@ -123,6 +123,7 @@ module DMR
       @sqlite.execute("INSERT INTO journal_entries (user_id, entry_type, title, entry, creation_date) VALUES (?,?,?,?,?)",
                       data[:user_id], data[:entry_type], data[:title], data[:entry], data[:creation_date].to_i)
       entry = JournalEntry.new(data)
+      binding.pry
       entry.id = @sqlite.execute("SELECT last_insert_rowid()")[0][0]
       entry
     end
@@ -144,6 +145,18 @@ module DMR
       result = self.get_journal_entries_for_user(user_id)
       result.select! { |x| x.creation_date.strftime("%y/%m/%d") == creation_date.strftime("%y/%m/%d") }
       result.first
+    end
+
+    def get_journal_entry_by_id(entry_id)
+      result = @sqlite.execute("SELECT * FROM journal_entries")
+      result.select! { |x| x[0] == entry_id }
+      entry = JournalEntry.new({ user_id: result[1],
+                                  creation_date: Time.at(result[5]),
+                                  title: result[3],
+                                  entry: result[4],
+                                  entry_type: result[2],
+                                  id: result[0] })
+      return entry
     end
 
 
