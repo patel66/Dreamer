@@ -6,6 +6,8 @@ require_relative 'lib/dreamer.rb'
 
 DMR.db_name = 'DMR_test.db'
 
+enable :sessions
+
 set :bind, '0.0.0.0'
 
 get '/welcome' do
@@ -18,7 +20,12 @@ get '/sign_up' do
 end
 
 get '/home_page' do
-  erb :home_page
+  result = DMR::CheckSignIn(sessions[:dmr_sid])
+  if result.success? == false
+    redirect '/sign_in'
+  else
+    erb :home_page
+  end
 end
 
 get '/sleep_profile' do
@@ -78,5 +85,7 @@ end
 
 
 post '/sign_in' do
-  erb
+  result = DMR::SignIn.run({ email: params[:email], password: params[:password] })
+  if result.success? == false
+    if
 end
