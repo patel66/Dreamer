@@ -41,11 +41,17 @@
           </div> <!-- end div.task-list -->
 
           <form class="form" method="post" action="/sleep_entry">
+              <h2 style="color: black;">Track Your Sleep Cycles</h2>
               <div>
                 <label style="padding-left: 150px; color: blue;"for="Sleep Time">Sleep Time:</label>
                 <input type="time" id="sleep_entry" name="sleep" />
                 <label style="padding-left: 150px; color: blue;"for="Wake Time">Wake Time:</label>
                 <input type="time" id="wake_entry" name="wake" />
+                <label style="padding-left: 147px; color: blue;" for="sleepday">Date:</label>
+                <input type="date" id="date" name="sleepdate" />
+                <input style="margin-left: 315px;" class="button" type="submit" value="Submit">
+
+              </div>
               </div>
           </form>
         </div> <!-- end div.widget -->
