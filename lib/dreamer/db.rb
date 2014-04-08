@@ -102,6 +102,12 @@ module DMR
       entries.select { |x| (x.sleep_time >= date) && (x.sleep_time <= (date + (7*24*60*60))) }
     end
 
+    def get_sleep_month(user_id, date)
+      entries = self.get_sleep_entries_by_user(user_id)
+      entries.select { |x| (x.sleep_time >= date) && (x.sleep_time <= (date + (30*24*60*60))) }
+    end
+
+
     def clear_all_records
       @sqlite.execute("DELETE FROM users")
       @sqlite.execute("DELETE FROM journal_entries")

@@ -1,7 +1,8 @@
 require 'pry-debugger'
 
+
 module DMR
-  class GetCyclesPerWeek < UseCase
+  class GetCyclesPerMonth < UseCase
 
     def run(data)
       if !data[:start_date]
@@ -14,10 +15,12 @@ module DMR
 
       if user == nil then return failure(:user_not_found) end
 
-      week_array = DMR.db.get_sleep_week(user.id, start_date)
+      month_array = DMR.db.get_sleep_month(user.id, start_date)
+
       sum = 0
-      week_array.each { |x| sum += CalculateCycles.run(x.sleep_time, x.wake_time) }
-      return success :week_cycles => sum
+      month_array.each { |x| sum += CalculateCycles.run(x.sleep_time, x.wake_time) }
+      return success :month_cycles => sum
     end
+
   end
 end

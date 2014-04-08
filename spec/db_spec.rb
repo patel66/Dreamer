@@ -87,6 +87,28 @@ module DMR
       expect(week1_array.size).to eq(4)
     end
 
+    it "can return a month's worth of sleep entries by user_id, start_date" do
+
+
+      current_sleep_time = Time.new(2010, 4,13,22)
+      current_wake_time = Time.new(2010, 4,14,6)
+      entries = []
+
+      30.times do
+        new_entry = @db1.create_sleep_entry({ user_id: @user1.id, sleep_time: current_sleep_time,
+                       wake_time: current_wake_time })
+        entries << new_entry
+        current_wake_time += (24*60*60)
+        current_sleep_time += (24*60*60)
+      end
+
+      month2_array = @db1.get_sleep_month(@user1.id, Time.new(2010,4,13))
+      month1_array = @db1.get_sleep_month(@user1.id, Time.new(2010,4,28))
+      expect(month2_array.size).to eq(30)
+      expect(month1_array.size).to eq(15)
+    end
+
+
     it "can create a journal entry" do
       entry = @db1.create_journal_entry({ user_id: @user1.id,
                                     creation_date: Time.now,

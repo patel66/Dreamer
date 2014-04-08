@@ -32,7 +32,7 @@ module DMR
       session = DMR.db.create_session(user1.id)
       result = GetCyclesPerWeek.run({ session_id: session.id, start_date: Time.new(2014,4,13,20) })
       expect(result.success?).to eq(true)
-      expect(result.week_hours).to eq(49)
+      expect(result.week_cycles).to eq(49)
     end
 
   end
