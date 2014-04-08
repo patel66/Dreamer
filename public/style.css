@@ -116,6 +116,16 @@ div.header ul li {
 
 }
 
+.jnl {
+  padding-top: 50px;
+  width: 70%;
+  margin-left: 150px;
+}
+
+.jnl input{
+  margin-left: 100px;
+}
+
 lable .journal {
 float: left;
 }
@@ -209,7 +219,7 @@ input{
   font-size:20px;
   border-radius: 3px;
   border-color: green;
-  background: url(assets/trans.png) repeat;
+  /*background: url(assets/trans.png) repeat;*/
 }
 
 a {

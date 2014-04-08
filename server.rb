@@ -41,6 +41,7 @@ post '/sign_up' do
   result = DMR::SignUp.run({ email: @email, password: @password, birthdate: @birthdate,
                   full_name: @full_name, phone: @phone })
   if result.success?
+    session[:dmr_sid] = result[:session_id]
     erb :home_page
   elsif result.error == :email_taken
     @error_message = "That email is already taken.  Please Try Again. "
@@ -53,17 +54,30 @@ post '/home_page' do
 
 end
 
+get '/journal' do
+  erb :journal
+end
+
 get '/journal_entry' do
   erb :journal_entry
 end
 
 post 'journal_entry' do
   @title = params[:title]
-
   @entry = params[:entry]
 
 end
 
 get '/sign_in' do
   erb :sign_in
+end
+
+get '/get_journals' do
+  erb :sign_in
+end
+
+
+
+post '/sign_in' do
+  erb
 end
