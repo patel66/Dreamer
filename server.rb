@@ -47,8 +47,6 @@ post '/sign_up' do
     @error_message = "That email is already taken.  Please Try Again. "
     erb :sign_up_error
   end
-<<<<<<< HEAD
-=======
 end
 
 post '/home_page' do
@@ -67,8 +65,6 @@ end
 post 'journal_entry' do
   @title = params[:title]
   @entry = params[:entry]
-
->>>>>>> 8ee2b58a8890b7b24d526e0536712a82a734602f
 end
 
 get '/sign_in' do
