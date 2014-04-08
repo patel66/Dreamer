@@ -10,8 +10,7 @@ enable :sessions
 
 set :bind, '0.0.0.0'
 
-get '/welcome' do
-  #@name = params[:name]
+get '/' do
   erb :welcome
 end
 
@@ -72,7 +71,7 @@ get '/journal_entry' do
   erb :journal_entry
 end
 
-post 'journal_entry' do
+post '/journal_entry' do
   @title = params[:title]
   @entry = params[:entry]
 end
