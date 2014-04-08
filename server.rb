@@ -99,6 +99,10 @@ get '/get_journals' do
   end
 end
 
+get '/journal_entry/:entry_id/'
+  result = DMR::GetJournalEntryByID.run(params[:entry_id])
+  @entry = result[:entry]
+end
 
 post '/sign_in' do
   result = DMR::SignIn.run({ email: params[:email],

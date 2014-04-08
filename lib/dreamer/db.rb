@@ -146,6 +146,11 @@ module DMR
       result.first
     end
 
+    def get_journal_entry_by_id(entry_id)
+      result = @sqlite.execute("SELECT * FROM journal_entries WHERE (id = ?", entry_id)
+      result[0]
+    end
+
 
 
   end
