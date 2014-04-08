@@ -39,6 +39,15 @@
               <li><a href="#">+ Add new task</a></li>
             </ul>
           </div> <!-- end div.task-list -->
+
+          <form class="form" method="post" action="/sleep_entry">
+              <div>
+                <label style="padding-left: 150px; color: blue;"for="Sleep Time">Sleep Time:</label>
+                <input type="time" id="sleep_entry" name="sleep" />
+                <label style="padding-left: 150px; color: blue;"for="Wake Time">Wake Time:</label>
+                <input type="time" id="wake_entry" name="wake" />
+              </div>
+          </form>
         </div> <!-- end div.widget -->
 
       </div> <!-- end div.container -->

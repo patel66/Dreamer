@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
-require 'pry'
+#require 'pry-debugger'
 require_relative 'lib/dreamer.rb'
 
 DMR.db_name = 'DMR_test.db'
@@ -37,19 +37,21 @@ get '/sleep_info' do
 end
 
 post '/sign_up' do
-  @email = params[:email]
-  @password = params[:password]
-  @full_name = params[:full_name]
-  @year = params[:birthdate].split('-')[0].to_i
-  @month = params[:birthdate].split('-')[1].to_i
-  @day = params[:birthdate].split('-')[2].to_i
-  @birthdate = Time.new(year, month, day)
-  @phone = params[:phone]
-  result = DMR::SignUp.run({ email: @email, password: @password, birthdate: @birthdate,
-                  full_name: @full_name, phone: @phone })
+
+  email = params[:email]
+  password = params[:password]
+  full_name = params[:full_name]
+  year = params[:birthdate].split('-')[0].to_i
+  month = params[:birthdate].split('-')[1].to_i
+  day = params[:birthdate].split('-')[2].to_i
+  birthdate = Time.new(year, month, day)
+  phone = params[:phone]
+  result = DMR::SignUp.run({ email: email, password: password, birthdate: birthdate,
+                  full_name: full_name, phone: phone })
+
   if result.success?
     session[:dmr_sid] = result[:session_id]
-    erb :home_page
+    redirect "/home_page"
   elsif result.error == :email_taken
     @error_message = "That email is already taken.  Please Try Again. "
     erb :sign_up_error
@@ -57,8 +59,9 @@ post '/sign_up' do
 end
 
 post '/home_page' do
-  erb :home_page
+  # Check if user is signed in
 
+  erb :home_page
 end
 
 get '/journal' do
@@ -79,13 +82,34 @@ get '/sign_in' do
 end
 
 get '/get_journals' do
+
   erb :sign_in
 end
 
 
 
 post '/sign_in' do
-  result = DMR::SignIn.run({ email: params[:email], password: params[:password] })
-  if result.success? == false
-    if
+
+  result = DMR::SignIn.run({ email: params[:email],
+                            password: params[:password] })
+  if result.success?
+    session[:dmr_sid] = result[:session_id]
+    erb :home_page
+  elsif result.error == :email_not_found
+    @error_message = "Email Not Found"
+    erb :sign_in_error
+  elsif result.error = :incorrect_password
+    @error_message = "Password Incorrect"
+    erb :sign_in_error
+  end
+
+
+end
+
+get '/sign_out' do
+
+  result = DMR::SignOut.run(session[:dmr_sid])
+  erb :sign_out
+
+
 end
