@@ -1,0 +1,32 @@
+
+[1mFrom:[0m /vagrant/dreamer/vendor/bundle/gems/rack-1.5.2/lib/rack/session/abstract/id.rb @ line 340 Rack::Session::Abstract::ID#commit_session:
+
+    [1;34m327[0m: [32mdef[0m [1;34mcommit_session[0m(env, status, headers, body)
+    [1;34m328[0m:   session = env[[1;34;4mENV_SESSION_KEY[0m]
+    [1;34m329[0m:   options = session.options
+    [1;34m330[0m: 
+    [1;34m331[0m:   [32mif[0m options[[33m:drop[0m] || options[[33m:renew[0m]
+    [1;34m332[0m:     session_id = destroy_session(env, session.id || generate_sid, options)
+    [1;34m333[0m:     [32mreturn[0m [status, headers, body] [32munless[0m session_id
+    [1;34m334[0m:   [32mend[0m
+    [1;34m335[0m: 
+    [1;34m336[0m:   [32mreturn[0m [status, headers, body] [32munless[0m commit_session?(env, session, options)
+    [1;34m337[0m: 
+    [1;34m338[0m:   session.send([33m:load![0m) [32munless[0m loaded_session?(session)
+    [1;34m339[0m:   session_id ||= session.id
+ => [1;34m340[0m:   session_data = session.to_hash.delete_if { |k,v| v.nil? }
+    [1;34m341[0m: 
+    [1;34m342[0m:   [32mif[0m [32mnot[0m data = set_session(env, session_id, session_data, options)
+    [1;34m343[0m:     env[[31m[1;31m"[0m[31mrack.errors[1;31m"[0m[31m[0m].puts([31m[1;31m"[0m[31mWarning! #{self.class.name}[0m[31m failed to save session. Content dropped.[1;31m"[0m[31m[0m)
+    [1;34m344[0m:   [32melsif[0m options[[33m:defer[0m] [32mand[0m [32mnot[0m options[[33m:renew[0m]
+    [1;34m345[0m:     env[[31m[1;31m"[0m[31mrack.errors[1;31m"[0m[31m[0m].puts([31m[1;31m"[0m[31mDefering cookie for #{session_id}[0m[31m[1;31m"[0m[31m[0m) [32mif[0m [1;32m$VERBOSE[0m
+    [1;34m346[0m:   [32melse[0m
+    [1;34m347[0m:     cookie = [1;34;4mHash[0m.new
+    [1;34m348[0m:     cookie[[33m:value[0m] = data
+    [1;34m349[0m:     cookie[[33m:expires[0m] = [1;34;4mTime[0m.now + options[[33m:expire_after[0m] [32mif[0m options[[33m:expire_after[0m]
+    [1;34m350[0m:     set_cookie(env, headers, cookie.merge!(options))
+    [1;34m351[0m:   [32mend[0m
+    [1;34m352[0m: 
+    [1;34m353[0m:   [status, headers, body]
+    [1;34m354[0m: [32mend[0m
+
