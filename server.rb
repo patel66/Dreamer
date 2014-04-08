@@ -19,7 +19,7 @@ get '/sign_up' do
 end
 
 get '/home_page' do
-  result = DMR::CheckSignIn(sessions[:dmr_sid])
+  result = DMR::CheckSignIn(session[:dmr_sid])
   if result.success? == false
     redirect '/sign_in'
   else
