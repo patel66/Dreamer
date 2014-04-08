@@ -11,7 +11,6 @@ module DMR
       @entry = data[:entry]
       @entry_type = data[:entry_type]
       @id = data[:id]
-
     end
 
   end

@@ -17,6 +17,18 @@ get '/sign_up' do
   erb :sign_up
 end
 
+get '/home_page' do
+  erb :home_page
+end
+
+get '/sleep_profile' do
+  erb :sleep_profile
+end
+
+get '/sleep_info' do
+  erb :sleep_info
+end
+
 post '/sign_up' do
   email = params[:email]
   password = params[:password]
@@ -29,11 +41,30 @@ post '/sign_up' do
   result = DMR::SignUp.run({ email: @email, password: @password, birthdate: @birthdate,
                   full_name: @full_name, phone: @phone })
   if result.success?
-    erb :sign_up_success
+    erb :home_page
   elsif result.error == :email_taken
     @error_message = "That email is already taken.  Please Try Again. "
     erb :sign_up_error
   end
+<<<<<<< HEAD
+=======
+end
+
+post '/home_page' do
+  erb :home_page
+
+end
+
+get '/journal_entry' do
+  erb :journal_entry
+end
+
+post 'journal_entry' do
+  @title = params[:title]
+
+  @entry = params[:entry]
+
+>>>>>>> 8ee2b58a8890b7b24d526e0536712a82a734602f
 end
 
 get '/sign_in' do

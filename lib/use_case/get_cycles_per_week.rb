@@ -16,18 +16,8 @@ module DMR
 
       week_array = DMR.db.get_sleep_week(user.id, start_date)
       sum = 0
-      week_array.each { |x| sum += self.get_cycles(x.sleep_time, x.wake_time) }
+      week_array.each { |x| sum += CalculateCycles.run(x.sleep_time, x.wake_time) }
       return success :week_hours => sum
-    end
-
-    def get_cycles(start_time, end_time)
-      sleep = end_time - start_time
-      if sleep < (2 * 60 * 60)
-        return 0
-      else
-        sleep = sleep - (2 * 60 * 60)
-        return ((sleep/(90 * 60)).floor + 1)
-      end
     end
   end
 end
