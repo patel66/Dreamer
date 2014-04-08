@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'pry-debugger'
 
 module DMR
   describe DB do
@@ -39,20 +40,20 @@ module DMR
     end
 
     before do
-      @entry1 = @db1.create_sleep_entry({ user_id: 1, sleep_time: Time.new(2014, 4,13,20),
+      @entry1 = @db1.create_sleep_entry({ user_id: @user1.id, sleep_time: Time.new(2014, 4,13,20),
                        wake_time: Time.new(2014, 4,14,7,30) })
-      @entry2 = @db1.create_sleep_entry({ user_id: 1, sleep_time: Time.new(2014, 4,14,20),
+      @entry2 = @db1.create_sleep_entry({ user_id: @user1.id, sleep_time: Time.new(2014, 4,14,20),
                        wake_time: Time.new(2014, 4,15,7,30) })
-      @entry3 = @db1.create_sleep_entry({ user_id: 1, sleep_time: Time.new(2014, 4,15,20),
+      @entry3 = @db1.create_sleep_entry({ user_id: @user1.id, sleep_time: Time.new(2014, 4,15,20),
                        wake_time: Time.new(2014, 4,16,7,30) })
-      @entry4 = @db1.create_sleep_entry({ user_id: 2, sleep_time: Time.new(2014, 4,13,20),
+      @entry4 = @db1.create_sleep_entry({ user_id: 99, sleep_time: Time.new(2014, 4,13,20),
                        wake_time: Time.new(2014, 4,14,7,30) })
-      @entry5 = @db1.create_sleep_entry({ user_id: 2, sleep_time: Time.new(2014, 4,14,20),
+      @entry5 = @db1.create_sleep_entry({ user_id: 99, sleep_time: Time.new(2014, 4,14,20),
                        wake_time: Time.new(2014, 4,15,7,30) })
     end
 
     it "can return a list of all sleep entries for a user" do
-      entries_list = @db1.get_sleep_entries_by_user(1)
+      entries_list = @db1.get_sleep_entries_by_user(@user1.id)
       expect(entries_list.size).to eq(3)
       expect(entries_list.first.sleep_time).to eq(Time.new(2014, 4,13,20))
       expect(entries_list.last.wake_time).to eq(Time.new(2014, 4,16,7,30))
@@ -63,6 +64,99 @@ module DMR
       expect(user.id).to eq(@user1.id)
       expect(user.email).to eq(@user1.email)
     end
+
+    it "can return a specific sleep_entry by user_id, date" do
+      entry = @db1.get_sleep_entry_by_user_and_date(@user1.id, Time.new(2014,4,15))
+      expect(entry.sleep_time.day).to eq(15)
+    end
+
+    it "can return a week's worth of sleep entries by user_id, start_date" do
+
+      entry4 = @db1.create_sleep_entry({ user_id: @user1.id, sleep_time: Time.new(2014, 4,16,20),
+                       wake_time: Time.new(2014, 4,17,7,30) })
+      entry5 = @db1.create_sleep_entry({ user_id: @user1.id, sleep_time: Time.new(2014, 4,17,20),
+                       wake_time: Time.new(2014, 4,18,7,30) })
+      entry6 = @db1.create_sleep_entry({ user_id: @user1.id, sleep_time: Time.new(2014, 4,18,20),
+                       wake_time: Time.new(2014, 4,19,7,30) })
+      entry7 = @db1.create_sleep_entry({ user_id: @user1.id, sleep_time: Time.new(2014, 4,19,20),
+                       wake_time: Time.new(2014, 4,20,7,30) })
+
+      week2_array = @db1.get_sleep_week(@user1.id, Time.new(2014,4,13))
+      week1_array = @db1.get_sleep_week(@user1.id, Time.new(2014,4,16))
+      expect(week2_array.size).to eq(7)
+      expect(week1_array.size).to eq(4)
+    end
+
+    it "can return a month's worth of sleep entries by user_id, start_date" do
+
+
+      current_sleep_time = Time.new(2010, 4,13,22)
+      current_wake_time = Time.new(2010, 4,14,6)
+      entries = []
+
+      30.times do
+        new_entry = @db1.create_sleep_entry({ user_id: @user1.id, sleep_time: current_sleep_time,
+                       wake_time: current_wake_time })
+        entries << new_entry
+        current_wake_time += (24*60*60)
+        current_sleep_time += (24*60*60)
+      end
+
+      month2_array = @db1.get_sleep_month(@user1.id, Time.new(2010,4,13))
+      month1_array = @db1.get_sleep_month(@user1.id, Time.new(2010,4,28))
+      expect(month2_array.size).to eq(30)
+      expect(month1_array.size).to eq(15)
+    end
+
+
+    it "can create a journal entry" do
+      entry = @db1.create_journal_entry({ user_id: @user1.id,
+                                    creation_date: Time.now,
+                                    title: "Why I'm Awesome",
+                                    entry: "I am awesome because I'm the best in the world. No one compares.
+                                                It's pretty fucking ridiculous, actually.",
+                                                entry_type: "thoughts" })
+      expect(entry.title).to eq("Why I'm Awesome")
+      expect(entry.id).to be_a(Fixnum)
+    end
+
+    it "can delete a session" do
+      session = @db1.create_session(@user1.id)
+      expect(@db1.get_user_by_sid(session.id).id).to eq(@user1.id)
+      @db1.delete_session(session.id)
+      expect(@db1.get_user_by_sid(session.id)).to eq(nil)
+    end
+
+
+    it "can return a list of all journal entries for a user" do
+      entry = @db1.create_journal_entry({ user_id: @user1.id,
+                                    creation_date: Time.new(2013, 4,1),
+                                    title: "Why I'm Awesome",
+                                    entry: "I am awesome because I'm the best in the world. No one compares.
+                                                It's pretty fucking ridiculous, actually.",
+                                                entry_type: "thoughts" })
+      entry = @db1.create_journal_entry({ user_id: @user1.id,
+                                    creation_date: Time.new(2013, 4,2),
+                                    title: "Why I'm STILL Awesome",
+                                    entry: "I am awesome because I'm the best in the world. No one compares.
+                                                It's pretty fucking ridiculous, actually.",
+                                                entry_type: "thoughts" })
+      entries = @db1.get_journal_entries_for_user(@user1.id)
+      expect(entries.size).to eq(2)
+      expect(entries[0].title).to eq("Why I'm Awesome")
+    end
+
+    it "can retrieve a journal_entry" do
+      entry = @db1.create_journal_entry({ user_id: @user1.id,
+                                    creation_date: Time.new(2013, 4,1),
+                                    title: "Why I'm Awesome",
+                                    entry: "I am awesome because I'm the best in the world. No one compares.
+                                                It's pretty fucking ridiculous, actually.",
+                                                entry_type: "thoughts" })
+      expect(@db1.get_journal_entry(@user1.id, Time.new(2013, 4, 1)).title).to eq("Why I'm Awesome")
+
+    end
+
 
   end
 end

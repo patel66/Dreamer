@@ -1,4 +1,7 @@
+require 'pry-debugger'
+
 module DMR
+
 
   def self.db_name=(db_name)
     @app_db_name = db_name
@@ -88,11 +91,61 @@ module DMR
       end
     end
 
+    def get_sleep_entry_by_user_and_date(user_id, date)
+      entries = self.get_sleep_entries_by_user(user_id)
+      entries.select! { |x| x.sleep_time.strftime("%y/%m/%d") == date.strftime("%y/%m/%d") }
+      return entries.first
+    end
+
+    def get_sleep_week(user_id, date)
+      entries = self.get_sleep_entries_by_user(user_id)
+      entries.select { |x| (x.sleep_time >= date) && (x.sleep_time <= (date + (7*24*60*60))) }
+    end
+
+    def get_sleep_month(user_id, date)
+      entries = self.get_sleep_entries_by_user(user_id)
+      entries.select { |x| (x.sleep_time >= date) && (x.sleep_time <= (date + (30*24*60*60))) }
+    end
+
+
     def clear_all_records
       @sqlite.execute("DELETE FROM users")
       @sqlite.execute("DELETE FROM journal_entries")
       @sqlite.execute("DELETE FROM sleep_entries")
       @sqlite.execute("DELETE FROM sessions")
     end
+
+    def create_journal_entry(data)
+      @sqlite.execute("INSERT INTO journal_entries (user_id, entry_type, title, entry, creation_date) VALUES (?,?,?,?,?)",
+                      data[:user_id], data[:entry_type], data[:title], data[:entry], data[:creation_date].to_i)
+      entry = JournalEntry.new(data)
+      entry.id = @sqlite.execute("SELECT last_insert_rowid()")[0][0]
+      entry
+    end
+
+    def get_journal_entries_for_user(user_id)
+      result = @sqlite.execute("SELECT * FROM journal_entries WHERE user_id = ?", user_id)
+      result.map do |row|
+        entry = JournalEntry.new({ user_id: row[1],
+                                   creation_date: Time.at(row[5]),
+                                  title: row[3],
+                                  entry: row[4],
+                                  entry_type: row[2],
+                                  id: row[0] })
+        entry
+      end
+    end
+
+    def get_journal_entry(user_id, creation_date)
+      result = self.get_journal_entries_for_user(user_id)
+      result.select! { |x| x.creation_date.strftime("%y/%m/%d") == creation_date.strftime("%y/%m/%d") }
+      result.first
+    end
+
+    def delete_session(session_id)
+      @sqlite.execute("DELETE FROM sessions WHERE id = ?", session_id)
+    end
+
+
   end
 end
