@@ -120,6 +120,13 @@ module DMR
       expect(entry.id).to be_a(Fixnum)
     end
 
+    it "can delete a session" do
+      session = @db1.create_session(@user1.id)
+      expect(@db1.get_user_by_sid(session.id).id).to eq(@user1.id)
+      @db1.delete_session(session.id)
+      expect(@db1.get_user_by_sid(session.id)).to eq(nil)
+    end
+
 
     it "can return a list of all journal entries for a user" do
       entry = @db1.create_journal_entry({ user_id: @user1.id,

@@ -142,5 +142,10 @@ module DMR
       result.first
     end
 
+    def delete_session(session_id)
+      @sqlite.execute("DELETE FROM sessions WHERE id = ?", session_id)
+    end
+
+
   end
 end
