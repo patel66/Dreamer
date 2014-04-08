@@ -21,6 +21,14 @@ get '/home_page' do
   erb :home_page
 end
 
+get '/sleep_profile' do
+  erb :sleep_profile
+end
+
+get '/sleep_info' do
+  erb :sleep_info
+end
+
 post '/sign_up' do
   @email = params[:email]
   @password = params[:password]
