@@ -81,8 +81,30 @@ post '/journal_entry' do
     redirect '/get_journals'
   else
   end
+end
+
+post '/sleep_entry' do
+  year = params[:date].split('-')[0].to_i
+  month = params[:date].split('-')[1].to_i
+  day = params[:date].split('-')[2].to_i
+  date = Time.new(year, month, day)
+  sleep_hour = params[:sleep_time].split('%3A')[0]
+  sleep_minute = params[:sleep_time].split('%3A')[1]
+  wake_hour = params[:wake_time].split('%3A')[0]
+  wake_minute = params[:wake_time].split('%3A')[1]
+
+  result = DMR::CreateSleepEntry.run({ session_id: session[:dmr_sid],
+                                        sleep_time: Time.new(year, month, day, sleep_hour, sleep_minute),
+                                        wake_time: Time.new(year, month, (day + 1), wake_hour, wake_minute) })
+
+  if result.success?
+    redirect '/home_page'
+  else
+    "Fuck"
+  end
 
 end
+
 
 get '/sign_in' do
   erb :sign_in
@@ -99,9 +121,13 @@ get '/get_journals' do
   end
 end
 
-get '/journal_entry/:entry_id/'
+get '/entries/:entry_id' do
   result = DMR::GetJournalEntryByID.run(params[:entry_id])
   @entry = result[:entry]
+  @title = @entry.title
+  @entry_body = @entry.entry
+
+  erb :get_entries
 end
 
 post '/sign_in' do
