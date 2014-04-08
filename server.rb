@@ -1,7 +1,7 @@
 require 'rubygems'
 require 'sinatra'
 require 'sinatra/reloader'
-#require 'pry-debugger'
+require 'pry-debugger'
 require_relative 'lib/dreamer.rb'
 
 DMR.db_name = 'DMR_test.db'
@@ -19,7 +19,7 @@ get '/sign_up' do
 end
 
 get '/home_page' do
-  result = DMR::CheckSignIn(session[:dmr_sid])
+  result = DMR::CheckSignIn.run(session[:dmr_sid])
   if result.success? == false
     redirect '/sign_in'
   else
@@ -36,7 +36,6 @@ get '/sleep_info' do
 end
 
 post '/sign_up' do
-
   email = params[:email]
   password = params[:password]
   full_name = params[:full_name]
@@ -74,6 +73,14 @@ end
 post '/journal_entry' do
   @title = params[:title]
   @entry = params[:entry]
+  result = DMR::CreateJournalEntry.run({ session_id: session[:dmr_sid],
+                                          title: @title, entry: @entry,
+                                          creation_date: Time.now,
+                                          entity_type: "night" })
+  if result.success?
+    redirect '/get_journals'
+  end
+
 end
 
 get '/sign_in' do
@@ -81,14 +88,18 @@ get '/sign_in' do
 end
 
 get '/get_journals' do
-
-  erb :sign_in
+  binding.pry
+  result = DMR::GetAllJournalEntries.run({ session_id: session[:dmr_sid] })
+  if result.success?
+    @entries = result.entries
+    erb :journal_index
+  else
+    redirect '/sign_in'
+  end
 end
 
 
-
 post '/sign_in' do
-
   result = DMR::SignIn.run({ email: params[:email],
                             password: params[:password] })
   if result.success?
@@ -101,14 +112,9 @@ post '/sign_in' do
     @error_message = "Password Incorrect"
     erb :sign_in_error
   end
-
-
 end
 
 get '/sign_out' do
-
   result = DMR::SignOut.run(session[:dmr_sid])
   erb :sign_out
-
-
 end
