@@ -30,14 +30,14 @@ get '/sleep_info' do
 end
 
 post '/sign_up' do
-  email = params[:email]
-  password = params[:password]
-  full_name = params[:full_name]
-  year = params[:birthdate].split('-')[0].to_i
-  month = params[:birthdate].split('-')[1].to_i
-  day = params[:birthdate].split('-')[2].to_i
-  birthdate = Time.new(year, month, day)
-  phone = params[:phone]
+  @email = params[:email]
+  @password = params[:password]
+  @full_name = params[:full_name]
+  @year = params[:birthdate].split('-')[0].to_i
+  @month = params[:birthdate].split('-')[1].to_i
+  @day = params[:birthdate].split('-')[2].to_i
+  @birthdate = Time.new(year, month, day)
+  @phone = params[:phone]
   result = DMR::SignUp.run({ email: @email, password: @password, birthdate: @birthdate,
                   full_name: @full_name, phone: @phone })
   if result.success?

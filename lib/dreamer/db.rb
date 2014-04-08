@@ -50,6 +50,10 @@ module DMR
       end
     end
 
+    def delete_session(session_id)
+      @sqlite.execute("DELETE FROM sessions WHERE id = ?", session_id)
+    end
+
     def create_sleep_entry(data)
       @sqlite.execute("INSERT INTO sleep_entries (user_id, sleep_time, wake_time) VALUES (?,?,?)",
                data[:user_id], data[:sleep_time].to_i, data[:wake_time].to_i)
@@ -142,9 +146,6 @@ module DMR
       result.first
     end
 
-    def delete_session(session_id)
-      @sqlite.execute("DELETE FROM sessions WHERE id = ?", session_id)
-    end
 
 
   end
